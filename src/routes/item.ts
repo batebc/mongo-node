@@ -1,18 +1,12 @@
 import { Router, Request, Response } from "express";
-import { createItem } from "../controllers/item";
+import { createItem, deleteItem, getItems, updateItem } from "../controllers/item";
 import { getCarDetail } from "../services/items";
+import { logMiddleware } from "../middleware/log";
 
 const router = Router();
-
-
-router.get('', (req:Request, res:Response ) => {
-    res.send({data:'Aqui van los modelos'});
-});
-
-router.get('/:id', getCarDetail);
-
+router.get('', getItems);
+router.get('/:id', logMiddleware , getCarDetail);
 router.post('', createItem);
-
- 
-
+router.put('/:id', updateItem);
+router.delete('/:id', deleteItem);
 export { router };

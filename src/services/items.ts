@@ -17,4 +17,14 @@ const insertItem = async (item:Car) => {
     return responseInsert;
 }
 
-export { getCarDetail, getCars, insertItem };
+const updateCar = async (id:string, item:Car) => {
+    const responseUpdateCar = await ItemModel.findOneAndUpdate({_id : id}, item, {new: true});
+    return responseUpdateCar;
+}
+
+const deleteCar = async (id:string) => {
+    const responseDeleItem = await ItemModel.findOneAndRemove({_id:id});
+    return responseDeleItem;
+}
+
+export { getCarDetail, getCars, insertItem, updateCar, deleteCar};
