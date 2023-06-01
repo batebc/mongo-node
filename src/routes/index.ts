@@ -4,13 +4,13 @@ import { readdirSync } from "fs";
 const PATH_ROUTER = `${__dirname}`;
 const router = Router();
 
-const cleanFileName = (filename: string) => filename.split(".").shift();
+const cleanFileName = (fileName: string) => fileName.split(".").shift();
 
-readdirSync(PATH_ROUTER).filter((filename) => {
-  const name = cleanFileName(filename);
-  if (name !== "index") {
-    import(`./${name}`).then((moduleRouter) => {
-      router.use(`/${name}`, moduleRouter.router);
+readdirSync(PATH_ROUTER).filter((fileName) => {
+  const cleanName = cleanFileName(fileName);
+  if (cleanName !== "index") {
+    import(`./${cleanName}`).then((moduleRouter) => {
+      router.use(`/${cleanName}`, moduleRouter.router);
     });
   }
 });

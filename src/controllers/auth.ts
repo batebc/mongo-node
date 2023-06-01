@@ -1,17 +1,30 @@
-import { Request, Response } from "express"
-import { loginUser, registerNewUser } from "../services/auth"
+import { Request, Response } from "express";
+import { loginUser, registerNewUser } from "../services/auth";
+import { HttpResponse } from "../utils/error.handle";
+import { validationResult } from "express-validator";
 
+const httpResponse = new HttpResponse();
 const register = async ({ body }: Request, res: Response) => {
-  const responseUser = await registerNewUser(body);
-  res.send(responseUser);
-}
-
-const login = async ({ body }: Request, res: Response) => {
-  const responseUserLogin = await loginUser(body);
-  if (responseUserLogin === 'Pass verification faile') {
-    res.status(403).send(responseUserLogin);
+  try {
+    console.log(body);
+    const responseUser = await registerNewUser(body);
+    res.send(responseUser);
+  } catch (e) {
+    return httpResponse.Error(res, e);
   }
-  res.send(responseUserLogin);
-}
+};
 
-export { register, login }
+const login = async ( req : Request, res: Response) => {
+  try {
+    validationResult(req).throw();
+    const responseUserLogin = await loginUser(req.body);
+    if (responseUserLogin === "Pass verification faile") {
+      return httpResponse.Forbidden(res, 'Pass verification faile')
+    }
+    res.send(responseUserLogin);
+  } catch (e) {
+    return httpResponse.Error(res, e);
+  }
+};
+
+export { register, login };

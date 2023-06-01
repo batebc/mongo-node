@@ -5,21 +5,28 @@ import { encrypt, verified } from "../utils/bcrypt.handle";
 import { generateToken } from "../utils/jw.handle";
 
 
-const registerNewUser = async ({ email, password, name }: User) => {
-  const userExists = await UserModel.findOne({ email: email });
+const registerNewUser = async ({ dni,
+  password,
+  name,
+  description,
+  organization,
+  address,
+  phone,
+  email }: User) => {
+  const userExists = await UserModel.findOne({ dni: dni });
   if (userExists) return 'user already exists';
   const passHash = await encrypt(password);
-  const userCreated = await UserModel.create({ email, password: passHash, name });
+  const userCreated = await UserModel.create({ dni, password: passHash, name, description, organization, address, phone, email});
   return userCreated;
 }
 
-const loginUser = async ({email, password}: Auth) => {
-  const user = await UserModel.findOne({email:email});
+const loginUser = async ({dni, password}: Auth) => {
+  const user = await UserModel.findOne({dni:dni});
   if (!user) return 'User not exists';
   const passVerified = await verified(password, user.password);
   if(!passVerified) return 'Pass verification faile';
 
-  const token = generateToken(user.email);
+  const token = generateToken(user.dni);
   const data = {
     token, user
   }

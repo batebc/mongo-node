@@ -3,10 +3,10 @@ import { User } from "../interfaces/user.interface";
 
 const UserSchema = new Schema<User>(
   {
-    email: {
+    dni: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
@@ -14,6 +14,10 @@ const UserSchema = new Schema<User>(
     },
     name: { type: String, required: true },
     description: { type: String, default: "Description" },
+    organization: { type: String },
+    address: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
   },
   {
     timestamps: true,

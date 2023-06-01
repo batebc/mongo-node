@@ -8,5 +8,5 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(router);
-//db().then(() => console.log('Conected!'));
+db().then(() => console.log('Conected!'));
 app.listen(PORT, () => console.log(`Server on port ${PORT}`));
